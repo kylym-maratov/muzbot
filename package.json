@@ -1,14 +1,14 @@
 {
-  "name": "muzebot",
+  "name": "muz-telegram-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Telegram bot for download music from youtube",
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
     "start:dev": "npx nodemon src/index.ts ",
     "build": "npx tsc"
   },
-  "keywords": [],
+  "keywords": ["telegram", "bot", "telegrambotapi"],
   "author": "",
   "license": "ISC",
   "dependencies": {

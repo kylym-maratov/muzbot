@@ -1,12 +1,11 @@
-import { searchVideo } from 'usetube'
 import bot from './server'
+import messages from './constants/json/messages.json'
+import { InlineQueryResultCachedAudio, InlineQueryResultArticle } from 'typegram'
 import { saveNewUser } from "./modules/database/scripts/save"
 import { parseInputText } from "./modules/scripts/text"
 import { downloadAudioFromYoutube } from './modules/scripts/download'
-import messages from './constants/json/messages.json'
 import { searcYoutubeWithKeyboard, searchYoutube } from "./modules/scripts/search";
 import { Song } from './modules/database/schemas/song'
-import { InlineQueryResultCachedAudio, InlineQueryResultArticle } from 'typegram'
 import { SongTypes } from './modules/database/schemas/song/types'
 import { urls } from './constants/urls'
 

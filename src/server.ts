@@ -3,7 +3,6 @@ import { Context, Telegraf } from "telegraf"
 import { connectDb } from './modules/database/connect'
 require('dotenv').config()
 
-
 const port: number = Number(process.env.PORT) || 3000
 const token: string = process.env.TOKEN || ''
 const dbUrl: string = process.env.DB_URL || ''
