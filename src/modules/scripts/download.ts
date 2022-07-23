@@ -52,9 +52,8 @@ export const downloadAudioFromYoutube = async (ctx: Context<Update>, id: string,
         downloading.push(id)
 
         const { videoDetails } = await getBasicInfo(urls.YOUTUBE + id)
-        const title = translateWord(videoDetails.title)
-        const filepath: string = `${title}-${id}.mp3`
-        const { message_id } = await ctx.reply(`id: ${id}\n\n${title}\n\nDownloading audio file from youtube please wait...`)
+        const filepath: string = `${translateWord(videoDetails.title)}-${id}.mp3`
+        const { message_id } = await ctx.reply(`id: ${id}\n\n${videoDetails.title}\n\nDownloading audio file from youtube please wait...`)
         await Promise.all([downloadAudio(id, filepath), downloadPicture(id)])
         const { tags } = await compilingAudioFile(id, videoDetails, filepath)
 
