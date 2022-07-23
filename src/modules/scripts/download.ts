@@ -2,7 +2,7 @@ import { exec } from "node:child_process"
 import { createWriteStream } from "fs"
 import { get } from "https"
 import NodeID3 from 'node-id3'
-import ytdl from 'ytdl-core'
+import ytdl, { getBasicInfo } from 'ytdl-core'
 import { Context } from "telegraf"
 import { Update } from "telegraf/typings/core/types/typegram"
 import { clearLocalFiles } from "./clear"
@@ -10,6 +10,8 @@ import { urls } from "../../constants/urls"
 import { saveNewSong } from "../database/scripts/save"
 import { SongTypes } from "../database/schemas/song/types"
 import { Song } from "../database/schemas/song"
+import stream from 'youtube-audio-stream'
+import { translateWord } from "./translate"
 
 const downloading: string[] = []
 
@@ -49,12 +51,13 @@ export const downloadAudioFromYoutube = async (ctx: Context<Update>, id: string,
 
         downloading.push(id)
 
-        const { videoDetails } = await ytdl.getBasicInfo(urls.YOUTUBE + id)
-        const { message_id } = await ctx.reply(`id: ${id}\ntitle: ${videoDetails.title}\n\n_Downloading audio file from youtube please wait..._`, { parse_mode: 'Markdown' })
-        await Promise.all([downloadAudio(id), downloadPicture(id)])
-        const { filepath, tags } = await compilingAudioFile(id, videoDetails)
+        const { videoDetails } = await getBasicInfo(urls.YOUTUBE + id)
+        const filepath: string = `${translateWord(videoDetails.title)} ${id}.mp3`
+        const { message_id } = await ctx.reply(`id: ${id}\n\n${videoDetails.title}\n\nDownloading audio file from youtube please wait...`)
+        await Promise.all([downloadAudio(id, filepath), downloadPicture(id)])
+        const { tags } = await compilingAudioFile(id, videoDetails, filepath)
 
-        ctx.replyWithChatAction('upload_document')
+        ctx.replyWithChatAction('upload_voice')
         const { audio } = await ctx.replyWithAudio({ source: filepath }, {
             performer: tags.artist,
             title: tags.title,
@@ -85,14 +88,12 @@ export const downloadAudioFromYoutube = async (ctx: Context<Update>, id: string,
 }
 
 //Download audio file from youtube, user youtube-dl in exec command
-const downloadAudio = (id: string) => {
+const downloadAudio = (id: string, filepath: string) => {
     return new Promise((res, rej) => {
-        exec(`youtube-dl --extract-audio --audio-format mp3 ${urls.YOUTUBE + id}`, (error, stdout, stderr) => {
-            if (error || stderr) {
-                rej(error)
-            }
-            res(stdout)
-        })
+        stream(urls.YOUTUBE + id)
+            .pipe(createWriteStream(filepath))
+            .on('finish', () => res(null))
+            .on('error', (err) => rej(err))
     })
 }
 
@@ -111,7 +112,7 @@ const downloadPicture = (id: string) => {
 }
 
 //Compiling video and picture, and edit audio tags
-const compilingAudioFile = (id: string, videoDetails: any): Promise<{ filepath: string, tags: TagsTypes }> => {
+const compilingAudioFile = (id: string, videoDetails: any, filepath: string): Promise<{ tags: TagsTypes }> => {
     return new Promise((res, rej) => {
         const arrTitle: string[] = videoDetails.title.split('-')
 
@@ -123,12 +124,9 @@ const compilingAudioFile = (id: string, videoDetails: any): Promise<{ filepath: 
             TRCK: "27"
         }
 
-        const filepath = `${videoDetails.title}-${id}.mp3`.replace('/', '_')
-
         NodeID3.update(tags, filepath, options)
 
         res({
-            filepath,
             tags
         })
     })
