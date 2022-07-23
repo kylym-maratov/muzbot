@@ -146,4 +146,9 @@ bot.on('inline_query', async (ctx) => {
     }
 })
 
-bot.launch()
+bot.launch({
+    webhook: {
+        domain: process.env.WEB_HOOK_DOMAIN,
+        port: 8080
+    }
+})

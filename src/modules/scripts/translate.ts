@@ -5,5 +5,5 @@ export const translateWord = (word: String) => {
         return a[char] || char
     }).join("");
 
-    return newWord.replace(/[^a-zа-яё\s]/gi, '').replace(/\s/g, '+')
+    return newWord.replace(/[^a-zа-яё\s]/gi, '').replace(/\s+/g, '+')
 }
