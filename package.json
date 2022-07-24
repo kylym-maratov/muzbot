@@ -1,7 +1,7 @@
 {
   "name": "muz-telegram-bot",
   "version": "1.0.0",
-  "description": "Telegram bot for download music from youtube",
+  "description": "Telegram bot for download music from youtube service",
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
