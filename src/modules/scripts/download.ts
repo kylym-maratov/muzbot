@@ -12,6 +12,7 @@ import { saveNewSong } from "../database/scripts/save"
 import { SongTypes } from "../database/schemas/song/types"
 import { Song } from "../database/schemas/song"
 import { translateWord } from "./translate"
+import { keyboardConstatns } from "../../constants/keyboard"
 
 const downloading: string[] = []
 
@@ -39,7 +40,10 @@ export const downloadAudioFromYoutube = async (ctx: Context<Update>, id: string,
         if (song) {
             return await ctx.replyWithAudio(song.data.file_id, {
                 caption: group ? username : '',
-                parse_mode: 'Markdown'
+                parse_mode: 'Markdown',
+                reply_markup: group ? undefined : {
+                    inline_keyboard: keyboardConstatns.audio
+                }
             })
         }
 
@@ -64,7 +68,10 @@ export const downloadAudioFromYoutube = async (ctx: Context<Update>, id: string,
             title: tags.title,
             thumb: { source: tags.APIC },
             caption: group ? username : '',
-            parse_mode: 'Markdown'
+            parse_mode: 'Markdown',
+            reply_markup: group ? undefined : {
+                inline_keyboard: keyboardConstatns.audio
+            }
         })
 
         await saveNewSong({

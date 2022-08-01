@@ -8,6 +8,11 @@ import { searcYoutubeWithKeyboard, searchYoutube } from "./modules/scripts/searc
 import { Song } from './modules/database/schemas/song'
 import { SongTypes } from './modules/database/schemas/song/types'
 import { urls } from './constants/urls'
+import 'dotenv/config'
+
+
+const port: number = Number(process.env.PORT) || 3000
+const domain: string = process.env.WEB_HOOK_DOMAIN || ''
 
 //Bot start handler
 bot.start(async (ctx) => {
@@ -94,6 +99,7 @@ bot.on('callback_query', (ctx) => {
         case 'delete':
             ctx.deleteMessage(messageid)
             break
+
         default:
             return
     }
@@ -147,8 +153,7 @@ bot.on('inline_query', async (ctx) => {
 })
 
 bot.launch({
-    webhook: {
-        domain: process.env.WEB_HOOK_DOMAIN,
-        port: 8080
-    }
+    webhook: { domain, port }
 })
+    .then(() => console.log(`Music Bot running on port: ${port}`))
+    .catch((e) => console.log(`Music bot running with error: ${e}`))
