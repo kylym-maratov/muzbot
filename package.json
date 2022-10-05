@@ -4,7 +4,8 @@
   "description": "Telegram bot for download music from youtube service",
   "main": "bot.js",
   "scripts": {
-    "start": "node dist/bot.js",
+    "start:prod":  "pm2 start dist/bot.js",
+    "start:test": "node dist/bot.js",
     "start:dev": "npx nodemon src/bot.ts ",
     "build": "npx tsc"
   },
