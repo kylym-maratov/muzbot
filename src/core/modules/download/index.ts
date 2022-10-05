@@ -12,6 +12,7 @@ import urls from '../../../constants/json/urls.json';
 
 const queue: string[] = []
 const files = path.join(__dirname, '../../../files/')
+const aviableVideoDuration: number = 12
 
 //Main file download cycleMain download process
 export default async function downloadAudioFromYoutube(ctx: Context<Update>, id: string) {
@@ -24,6 +25,12 @@ export default async function downloadAudioFromYoutube(ctx: Context<Update>, id:
         queue.push(id)
 
         const { videoDetails } = await getBasicInfo(urls.YOUTUBE + id)
+
+        const videoDuration = Math.ceil(Number(videoDetails.lengthSeconds) / 60)
+
+        if (videoDuration > aviableVideoDuration) {
+            return ctx.reply(messages.long_video)
+        }
 
         const audioFilePath: string = files + `${convertWord(videoDetails.title)}-${id}.mp3`
 

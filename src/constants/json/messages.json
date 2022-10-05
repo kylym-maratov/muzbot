@@ -2,5 +2,6 @@
   "start": "Hello, i'm bot for download and search songs from yotuube music service.\n\nYou can just send me title of song or video link.\n\nMore info: /help",
   "wait_download": "This song is already being downloaded by another user, please try again in a while",
   "download_message": "The download has started please wait",
-  "help": "Help menu"
+  "help": "Help menu",
+  "long_video": "I can't download music that lasts more than 12 minutes, it's a limitation Telegram bots :("
 }
