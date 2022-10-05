@@ -1,6 +1,6 @@
 
 
-export const keyboardConstatns = {
+export const inlineKeyboard = {
     delete: [
         {
             text: '🔽',
