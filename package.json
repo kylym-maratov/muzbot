@@ -4,7 +4,7 @@
   "description": "Telegram bot for download music from youtube service",
   "main": "bot.js",
   "scripts": {
-    "start:prod":  "pm2 start dist/bot.js",
+    "start:prod": "pm2 start dist/bot.js",
     "start:test": "node dist/bot.js",
     "start:dev": "npx nodemon src/bot.ts ",
     "build": "npx tsc"
@@ -26,7 +26,7 @@
     "telegraf": "^4.8.5",
     "usetube": "^2.1.4",
     "youtube-audio-stream": "^0.3.61",
-    "ytdl-core": "^4.11.0"
+    "ytdl-core": "^4.11.2"
   },
   "devDependencies": {
     "@types/usetube": "^2.1.0",
