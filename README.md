@@ -3,7 +3,7 @@
 <h1>Muz Telegram Bot</h1>
 </div>
 <h3>Description</h3>
-<p>Youtube music download bot for telegram, can download songs, search by name, by artist.</p>
+<p>Youtube music download bot for telegram, can download songs and search by name, by artist.</p>
 <hr>
 <h3>How to use the bot?</h3>
 <p>Create .env file with fields</p>
